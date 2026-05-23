@@ -39,7 +39,7 @@ class MAX7219Display
 	void displayText(const char* text, uint offset, uint length);
 };
 ```
-`displayText()` can contain the decimal point.
+`displayText(const char* text)` : the `text` string can contain the decimal point.
 
 ## Data Sheet
 

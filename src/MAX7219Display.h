@@ -273,13 +273,9 @@ void MAX7219Display::sendByte(byte b)
 {
 	// clock out each bit, MS bit first
 	for (uint bit = 0; bit < 8; ++bit) {
-		// CLK = 0
 		digitalWrite(clkPin, 0);
-		// DIN = data bit
 		digitalWrite(dinPin, (b & 0x80) ? 1 : 0);
-		// CLK = 1
 		digitalWrite(clkPin, 1);
-		// next bit
 		b <<= 1;
 	}
 }

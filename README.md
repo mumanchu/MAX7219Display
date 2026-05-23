@@ -1,7 +1,7 @@
 # MAX7219Display
 MAX7219 8-digit 7-Segment LED display driver.
 
-
+![max7219-led](/images/max7219-led.jpg)
 
 
 ## 5V Power

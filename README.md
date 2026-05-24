@@ -4,23 +4,26 @@ MAX7219 8-digit 7-Segment LED display driver.
 ![max7219-led](/images/max7219-led.jpg)
 
 
-## 5V Power
+## 3.3V Power
 
-The MAX7219 requires 5V, so the LED module must be powered by 5V.
-On a 3.3V MCU, use a 10K pullup to 3.3V on the chip select (CS) pin.
-On a 5V MCU, connect the 10K pullup to 5V.
-The CS ouput is 'open dran'. This allows more than one display to be 
-connected, sharing the DIN and CLK signals, but with separate CS pins.
+On a 3.3V microcontroller, it's best to run the board at 3.3V if the
+controller does not have 5V-tolerant inputs. Otherwise you must use
+a logic-level translator.
+
+You may need a 10K pullup on the CS pin to 3.3V or 5V (depending on the MCU voltage).
 
 ## 3-Wire Serial Interface
 
 It has Clock (CLK), data in (DIN) and chip select (CS) signals.
 The serial interface is not SPI, it is bit-banged (it does not need 
 to be really fast). You can use 'CS' to select the chip if there is 
-more than one chip on the same 2-wire serial bus (CLK & DIN). Use a 
-10K pullup on the CS pin to 3.3V or 5V (depending on the MCU voltage).
+more than one chip on the same 2-wire serial bus (CLK & DIN). 
 
 ## Class Reference
+
+`displayText(const char* text)` : the `text` string can contain the decimal point.
+
+For formatting numbers, take a look at `sprintf()`. Formatting is not done by this library.
 
 ```cpp
 class MAX7219Display
@@ -39,7 +42,6 @@ class MAX7219Display
 	void displayText(const char* text, uint offset, uint length);
 };
 ```
-`displayText(const char* text)` : the `text` string can contain the decimal point.
 
 ## Data Sheet
 

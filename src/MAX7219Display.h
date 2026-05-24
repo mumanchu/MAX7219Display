@@ -10,25 +10,34 @@
 Code translated from the C# of 2022.04.06
 ..\TinyCLRApplication3\MAX7219Led.cs
 
-5V POWER
---------
-The MAX7219 requires 5V, so the LED module must be powered by 5V ().
-On a 3.3V MCU, use a 10K pullup to 3.3V on the chip select (CS) pin.
-This allows more than one display to be connected, sharing the DIN 
-and CLK signals, but with separate CS pins.
+3.3V POWER
+----------
+On a 3.3V microcontroller, it's best to run the board at 3.3V if the
+controller does not have 5V-tolerant inputs. Otherwise you must use
+a logic-level translator.
 
 3-WIRE SERIAL INTERFACE
 -----------------------
-Clock (CLK), data in (DIN) and chip select (CS) lines.
+Clock (CLK), data in (DIN) and chip select (CS).
 The serial interface is not SPI, it is bit-banged (it does not need 
 to be really fast). You can use 'CS' to select the chip if there is 
-more than one chip on the same 2-wire serial bus (CLK & DIN). Use a 
-10K pullup on the CS pin to 3.3V or 5V (depending on the MCU voltage).
+more than one chip on the same 2-wire serial bus (CLK & DIN). 
+
+You may need a 10K pullup on the CS pin to 3.3V or 5V (depending on
+the MCU voltage).
 
 DATA SHEET
 ----------
 https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf
 */
+
+// These are normally defined in MumanchuDebug.h
+#ifndef ASSERT2
+#define LOGERROR(s) { Serial.println(s); Serial.flush(); }
+#define ASSERT(b) if (!(b)) { LOGERROR("ASSERT failed"); return false; }
+#define ASSERT2(b) if (!(b)) { LOGERROR("ASSERT failed"); return; }
+#endif
+
 
 class MAX7219Display
 {
@@ -273,9 +282,13 @@ void MAX7219Display::sendByte(byte b)
 {
 	// clock out each bit, MS bit first
 	for (uint bit = 0; bit < 8; ++bit) {
+		// CLK = 0
 		digitalWrite(clkPin, 0);
+		// DIN = data bit
 		digitalWrite(dinPin, (b & 0x80) ? 1 : 0);
+		// CLK = 1
 		digitalWrite(clkPin, 1);
+		// next bit
 		b <<= 1;
 	}
 }

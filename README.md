@@ -3,6 +3,9 @@ MAX7219 8-digit 7-Segment LED display driver.
 
 ![max7219-led](/images/max7219-led.jpg)
 
+> [!NOTE]
+> If you need to control 8x8 LED matrices, this library is pretty good \
+> https://github.com/RobTillaart/MATRIX7219
 
 ## 3.3V Power
 
